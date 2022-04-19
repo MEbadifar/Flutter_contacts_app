@@ -1,4 +1,5 @@
 import 'package:contacts_app/screens/add_edit_screen.dart';
+import 'package:contacts_app/utils/network.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {

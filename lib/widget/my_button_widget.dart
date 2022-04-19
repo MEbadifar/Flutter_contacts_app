@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 class ButtonWidget extends StatelessWidget {
   const ButtonWidget({
     Key? key,
-    required this.onpressed,
+    required this.onPressed,
     required this.text,
   }) : super(key: key);
 
-  final Function() onpressed;
+  final Function() onPressed;
   final String text;
 
   @override
@@ -20,7 +20,7 @@ class ButtonWidget extends StatelessWidget {
           elevation: 0,
           backgroundColor: Colors.redAccent,
         ),
-        onPressed: () {},
+        onPressed: onPressed,
         child: Text(text),
       ),
     );

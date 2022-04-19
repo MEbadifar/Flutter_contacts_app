@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 class MyTextField extends StatelessWidget {
   final TextEditingController controller;
   final String hintext;
-  final TextInputType type;
   final String errorText;
+  final TextInputType type;
 
   const MyTextField({
     Key? key,
     required this.controller,
     required this.hintext,
-    required this.type,
     required this.errorText,
+    required this.type,
   }) : super(key: key);
 
   @override

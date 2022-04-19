@@ -44,12 +44,12 @@ class _AddEditScreenState extends State<AddEditScreen> {
                 errorText: 'لطفا شماره را وارد کنید',
                 type: TextInputType.number,
               ),
-              const SizedBox(
-                height: 20.0,
-              ),
+              const SizedBox(height: 20.0),
               ButtonWidget(
-                onpressed: () {
-                  if (formKey.currentState!.validate()) {}
+                onPressed: () {
+                  if (formKey.currentState!.validate()) {
+                    print('ok');
+                  }
                 },
                 text: 'اضافه کردن',
               ),
