@@ -1,22 +1,24 @@
 class Contact {
   Contact({
     required this.phone,
-    required this.fllname,
+    required this.fullname,
   });
 
   late final String phone;
-  late final String fllname;
+  late final String fullname;
+  late int id;
 
   Contact.fromJson(Map<String, dynamic> json) {
     phone = json['phone'];
-    fllname = json['fllname'];
+    fullname = json['fllname'];
+    id = json['id'];
   }
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
 
     _data['phone'] = phone;
-    _data['fllname'] = fllname;
+    _data['fllname'] = fullname;
     return _data;
   }
 }

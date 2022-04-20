@@ -2,10 +2,12 @@ import 'package:contacts_app/widget/my_button_widget.dart';
 import 'package:contacts_app/widget/my_textfield_widget.dart';
 import 'package:flutter/material.dart';
 
+import '../utils/network.dart';
+
 class AddEditScreen extends StatefulWidget {
   static TextEditingController namecontroller = TextEditingController();
   static TextEditingController phonecontroller = TextEditingController();
-
+  static int id = 0;
   const AddEditScreen({Key? key}) : super(key: key);
 
   @override
@@ -22,9 +24,9 @@ class _AddEditScreenState extends State<AddEditScreen> {
         appBar: AppBar(
           elevation: 0,
           backgroundColor: Colors.redAccent,
-          title: const Text(
-            'مخاطب جدید',
-            style: TextStyle(fontSize: 16),
+          title: Text(
+            AddEditScreen.id == 0 ? 'ویرایش مخاطب' : 'مخاطب جدید',
+            style: const TextStyle(fontSize: 16),
           ),
           centerTitle: true,
         ),
@@ -48,10 +50,44 @@ class _AddEditScreenState extends State<AddEditScreen> {
               ButtonWidget(
                 onPressed: () {
                   if (formKey.currentState!.validate()) {
-                    print('ok');
+                    //
+                    Network.checkInternet();
+                    Future.delayed(const Duration(seconds: 3)).then(
+                      (value) {
+                        if (Network.isConnected) {
+                          if (AddEditScreen.id == 0) {
+                            Network.postData(
+                              phone: AddEditScreen.phonecontroller.text,
+                              fullname: AddEditScreen.namecontroller.text,
+                            );
+                          } else {
+                            Network.putData(
+                              phone: AddEditScreen.phonecontroller.text,
+                              fullname: AddEditScreen.namecontroller.text,
+                              id: AddEditScreen.id.toString(),
+                            );
+                          }
+                          Navigator.pop(context);
+                        } else {
+                          Network.showInternetError(context);
+                        }
+                      },
+                    );
+
+                    //
+
+                    // Network.deleteContact('2');
+
+                    //
+
+                    //Network.putData(
+                    //id:'1';
+                    //    phone: AddEditScreen.phonecontroller.text,
+                    //  fullname: AddEditScreen.namecontroller.text);
+
                   }
                 },
-                text: 'اضافه کردن',
+                text: AddEditScreen.id == 0 ? 'ویرایش کردن' : 'اضافه کردن',
               ),
             ],
           ),

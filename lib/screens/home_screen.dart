@@ -1,5 +1,6 @@
 import 'package:contacts_app/screens/add_edit_screen.dart';
 import 'package:contacts_app/utils/network.dart';
+import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -11,15 +12,42 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
+  void initState() {
+    Network.checkInternet();
+    Future.delayed(const Duration(seconds: 3)).then((value) async {
+      if (Network.isConnected) {
+        Network.getData().then((value) async {
+          await Future.delayed(const Duration(seconds: 3));
+          setState(() {});
+        });
+      }
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          AddEditScreen.id = 0;
+          AddEditScreen.namecontroller.text = '';
+          AddEditScreen.phonecontroller.text = '';
+          //
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => const AddEditScreen(),
             ),
+          ).then(
+            (value) {
+              Network.getData().then(
+                (value) async {
+                  await Future.delayed(const Duration(seconds: 5));
+                  setState(() {});
+                },
+              );
+            },
           );
         },
         child: const Icon(Icons.add),
@@ -37,15 +65,32 @@ class _HomeScreenState extends State<HomeScreen> {
         leading: const Icon(Icons.import_contacts_sharp),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Network.checkInternet();
+              Future.delayed(const Duration(seconds: 3)).then((value) {
+                if (Network.isConnected) {
+                  Network.getData().then((value) async {
+                    await Future.delayed(const Duration(seconds: 3));
+                    setState(() {});
+                  });
+                } else {
+                  Network.showInternetError(context);
+                }
+              });
+            },
             icon: const Icon(Icons.refresh),
           ),
         ],
       ),
       body: ListView.builder(
-        itemCount: 10,
+        itemCount: Network.contacts.length,
         itemBuilder: (context, index) {
           return ListTile(
+            onLongPress: () async {
+              Network.deleteContact(Network.contacts[index].id.toString());
+              await Future.delayed(const Duration(seconds: 3));
+              setState(() {});
+            },
             leading: CircleAvatar(
               backgroundColor: Colors.redAccent,
               child: Text(
@@ -54,11 +99,17 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             trailing: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                AddEditScreen.id = Network.contacts[index].id;
+                AddEditScreen.namecontroller.text =
+                    Network.contacts[index].fullname;
+                AddEditScreen.phonecontroller.text =
+                    Network.contacts[index].phone;
+              },
               icon: const Icon(Icons.edit),
             ),
-            title: const Text('salam'),
-            subtitle: const Text('0152'),
+            title: Text(Network.contacts[index].fullname),
+            subtitle: Text(Network.contacts[index].phone),
           );
         },
       ),
