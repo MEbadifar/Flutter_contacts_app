@@ -5,6 +5,7 @@ class MyTextField extends StatelessWidget {
   final String hintext;
   final String errorText;
   final TextInputType type;
+  final bool isEnabled;
 
   const MyTextField({
     Key? key,
@@ -12,11 +13,13 @@ class MyTextField extends StatelessWidget {
     required this.hintext,
     required this.errorText,
     required this.type,
+    this.isEnabled = true,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      enabled: isEnabled,
       validator: (value) {
         if (value == null || value.isEmpty) {
           return errorText;

@@ -13,7 +13,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
-    Network.checkInternet();
+    Network.checkInternet(context);
     Future.delayed(const Duration(seconds: 3)).then((value) async {
       if (Network.isConnected) {
         Network.getData().then((value) async {
@@ -29,6 +29,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.redAccent,
+        elevation: 0,
         onPressed: () {
           AddEditScreen.id = 0;
           AddEditScreen.namecontroller.text = '';
@@ -51,8 +53,6 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         },
         child: const Icon(Icons.add),
-        backgroundColor: Colors.redAccent,
-        elevation: 0,
       ),
       appBar: AppBar(
         elevation: 0,
@@ -66,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              Network.checkInternet();
+              Network.checkInternet(context);
               Future.delayed(const Duration(seconds: 3)).then((value) {
                 if (Network.isConnected) {
                   Network.getData().then((value) async {
@@ -74,7 +74,19 @@ class _HomeScreenState extends State<HomeScreen> {
                     setState(() {});
                   });
                 } else {
-                  Network.showInternetError(context);
+                  CoolAlert.show(
+                    width: 100,
+                    context: context,
+                    type: CoolAlertType.error,
+                    title: 'خطا',
+                    text: 'خطا در اتصال',
+                    confirmBtnText: 'باشه',
+                    confirmBtnTextStyle: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.white,
+                    ),
+                    confirmBtnColor: Colors.redAccent,
+                  );
                 }
               });
             },

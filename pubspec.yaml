@@ -33,6 +33,9 @@ dependencies:
   http: ^0.13.4
   connectivity_plus: ^2.3.0
   cool_alert: ^1.1.0
+  device_info_plus: ^3.2.3
+  crypto: ^3.0.1
+  shared_preferences: ^2.0.13
 
 
   # The following adds the Cupertino Icons font to your application.

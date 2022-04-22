@@ -11,12 +11,13 @@ class Network {
 
   static bool isConnected = false;
 
-  static Future<bool> checkInternet() async {
+  static Future<bool> checkInternet(BuildContext context) async {
     Connectivity().onConnectivityChanged.listen((status) {
       if (status == ConnectivityResult.wifi ||
           status == ConnectivityResult.mobile) {
         isConnected = true;
       } else {
+        showInternetError(context);
         isConnected = false;
       }
       print(Network.isConnected);
