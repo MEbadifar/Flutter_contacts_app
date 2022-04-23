@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:contacts_app/screens/home_screen.dart';
+import 'package:contacts_app/utils/responsive.dart';
 import 'package:contacts_app/widget/my_button_widget.dart';
 import 'package:contacts_app/widget/my_textfield_widget.dart';
 import 'package:cool_alert/cool_alert.dart';
@@ -51,9 +52,12 @@ class LicenseScreen extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.redAccent,
-        title: const Text(
+        title: Text(
           'فعال سازی',
-          style: TextStyle(fontSize: 16),
+          style: TextStyle(
+              fontSize: ScreenUtil(context).screenWidth < 1000
+                  ? 16
+                  : ScreenUtil(context).screenWidth * 0.013),
         ),
         centerTitle: true,
       ),

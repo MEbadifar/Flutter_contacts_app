@@ -1,5 +1,6 @@
 import 'package:contacts_app/screens/add_edit_screen.dart';
 import 'package:contacts_app/utils/network.dart';
+import 'package:contacts_app/utils/responsive.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +15,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     Network.checkInternet(context);
-    Future.delayed(const Duration(seconds: 3)).then((value) async {
+    Future.delayed(const Duration(seconds: 3)).then((value) {
       if (Network.isConnected) {
         Network.getData().then((value) async {
           await Future.delayed(const Duration(seconds: 3));
@@ -57,9 +58,12 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.redAccent,
-        title: const Text(
+        title: Text(
           'دفترچه تلفن انلاین',
-          style: TextStyle(fontSize: 16),
+          style: TextStyle(
+              fontSize: ScreenUtil(context).screenWidth < 1000
+                  ? 16
+                  : ScreenUtil(context).screenWidth * 0.013),
         ),
         centerTitle: true,
         leading: const Icon(Icons.import_contacts_sharp),
@@ -107,21 +111,51 @@ class _HomeScreenState extends State<HomeScreen> {
               backgroundColor: Colors.redAccent,
               child: Text(
                 (index + 1).toString(),
-                style: const TextStyle(color: Colors.white),
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: ScreenUtil(context).screenWidth < 1000
+                        ? 16
+                        : ScreenUtil(context).screenWidth * 0.012),
               ),
             ),
             trailing: IconButton(
               onPressed: () {
                 AddEditScreen.id = Network.contacts[index].id;
+                //
                 AddEditScreen.namecontroller.text =
                     Network.contacts[index].fullname;
+                //
                 AddEditScreen.phonecontroller.text =
                     Network.contacts[index].phone;
+                //
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AddEditScreen(),
+                  ),
+                ).then((value) {
+                  Network.getData().then((value) async {
+                    await Future.delayed(const Duration(seconds: 5));
+                    setState(() {});
+                  });
+                });
               },
               icon: const Icon(Icons.edit),
             ),
-            title: Text(Network.contacts[index].fullname),
-            subtitle: Text(Network.contacts[index].phone),
+            title: Text(
+              Network.contacts[index].fullname,
+              style: TextStyle(
+                  fontSize: ScreenUtil(context).screenWidth < 1000
+                      ? 16
+                      : ScreenUtil(context).screenWidth * 0.012),
+            ),
+            subtitle: Text(
+              Network.contacts[index].phone,
+              style: TextStyle(
+                  fontSize: ScreenUtil(context).screenWidth < 1000
+                      ? 16
+                      : ScreenUtil(context).screenWidth * 0.012),
+            ),
           );
         },
       ),

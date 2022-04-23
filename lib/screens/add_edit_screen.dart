@@ -1,7 +1,7 @@
+import 'package:contacts_app/utils/responsive.dart';
 import 'package:contacts_app/widget/my_button_widget.dart';
 import 'package:contacts_app/widget/my_textfield_widget.dart';
 import 'package:flutter/material.dart';
-
 import '../utils/network.dart';
 
 class AddEditScreen extends StatefulWidget {
@@ -22,11 +22,14 @@ class _AddEditScreenState extends State<AddEditScreen> {
       key: formKey,
       child: Scaffold(
         appBar: AppBar(
-          elevation: 0,
+          elevation: 0.0,
           backgroundColor: Colors.redAccent,
           title: Text(
-            AddEditScreen.id == 0 ? 'ویرایش مخاطب' : 'مخاطب جدید',
-            style: const TextStyle(fontSize: 16),
+            AddEditScreen.id == 0 ? ' مخاطب جدید' : 'ویرایش مخاطب',
+            style: TextStyle(
+                fontSize: ScreenUtil(context).screenWidth < 1000
+                    ? 16
+                    : ScreenUtil(context).screenWidth * 0.013),
           ),
           centerTitle: true,
         ),
@@ -50,7 +53,6 @@ class _AddEditScreenState extends State<AddEditScreen> {
               ButtonWidget(
                 onPressed: () {
                   if (formKey.currentState!.validate()) {
-                    //
                     Network.checkInternet(context);
                     Future.delayed(const Duration(seconds: 3)).then(
                       (value) {
@@ -87,7 +89,7 @@ class _AddEditScreenState extends State<AddEditScreen> {
 
                   }
                 },
-                text: AddEditScreen.id == 0 ? 'ویرایش کردن' : 'اضافه کردن',
+                text: AddEditScreen.id == 0 ? '  اضافه کردن' : 'ویرایش کردن',
               ),
             ],
           ),

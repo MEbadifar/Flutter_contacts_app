@@ -1,3 +1,4 @@
+import 'package:contacts_app/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 class MyTextField extends StatelessWidget {
@@ -19,6 +20,10 @@ class MyTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      style: TextStyle(
+          fontSize: ScreenUtil(context).screenWidth < 1000
+              ? 16
+              : ScreenUtil(context).screenWidth * 0.013),
       enabled: isEnabled,
       validator: (value) {
         if (value == null || value.isEmpty) {
